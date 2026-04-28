@@ -27,18 +27,28 @@ export default function VideoPlayer({
   }, [mediaUrl, videoRef]);
 
   // When sync engine tries to play and browser blocks it, show tap overlay
-  useEffect(() => {
-    const video = videoRef?.current;
-    if (!video) return;
+useEffect(() => {
+  const video = videoRef?.current;
+  if (!video || !mediaUrl) return;
 
-    const handlePlayFailed = () => {
-      // If video is paused and should be playing, browser blocked autoplay
+  // Try to play immediately — if browser blocks it, show tap overlay
+  const attemptPlay = async () => {
+    try {
+      await video.play();
+      setNeedsTap(false);
+    } catch {
       setNeedsTap(true);
-    };
+    }
+  };
 
-    video.addEventListener('suspend', handlePlayFailed);
-    return () => video.removeEventListener('suspend', handlePlayFailed);
-  }, [videoRef, mediaUrl]);
+  // Wait for video to be ready then attempt play
+  if (video.readyState >= 3) {
+    attemptPlay();
+  } else {
+    video.addEventListener('canplay', attemptPlay, { once: true });
+    return () => video.removeEventListener('canplay', attemptPlay);
+  }
+}, [videoRef, mediaUrl]);
 
   const handleTapToStart = async () => {
     const video = videoRef.current;
