@@ -1,0 +1,4 @@
+# Local dependency installs, build output, and dev-server logs.
+node_modules/
+dist/
+vite-dev*.log
