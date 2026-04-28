@@ -138,7 +138,7 @@ export default function WatchRoom() {
       color: '#f2f276',
       letterSpacing: '0.05em',
     }}>
-      made with ♥ by himank in the memorial of his pretty girlfriend aarna, fly high <span style={{ fontSize: '10px', color: '#f9ab36' }}>2009-2024</span>
+      made with ♥ by himank
     </footer>
     2026 &copy; CoStream. All rights reserved.
     </main>
